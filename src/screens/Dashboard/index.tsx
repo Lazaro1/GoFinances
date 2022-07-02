@@ -82,6 +82,7 @@ export function Dashboard() {
           data={data}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <TransactionCard data={item} />}
+          //teste
         />
       </S.Transactions>
     </S.Container>
