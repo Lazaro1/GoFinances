@@ -57,7 +57,7 @@ export function Dashboard() {
 
       <S.HighLightCards>
         <HighLightCard
-          title="Entradas"
+          title="Entradass"
           amount="R$ 17.400,00"
           lastTransaction="Ultima Entrada dia 13 de Outubro"
           type="up"
@@ -82,7 +82,6 @@ export function Dashboard() {
           data={data}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <TransactionCard data={item} />}
-          //teste
         />
       </S.Transactions>
     </S.Container>
