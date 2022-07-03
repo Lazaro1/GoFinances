@@ -57,7 +57,7 @@ export function Dashboard() {
 
       <S.HighLightCards>
         <HighLightCard
-          title="Entradass"
+          title="Entradas"
           amount="R$ 17.400,00"
           lastTransaction="Ultima Entrada dia 13 de Outubro"
           type="up"
