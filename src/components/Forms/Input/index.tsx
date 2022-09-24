@@ -4,6 +4,6 @@ import * as S from "./style";
 
 type Props = TextInputProps;
 
-export function Input({...rest}: Props) {
-  return <S.Container {...rest} />
+export function Input({ ...rest }: Props) {
+  return <S.Container {...rest} />;
 }
