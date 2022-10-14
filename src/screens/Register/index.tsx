@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import { Button } from "../../components/Forms/Button";
 import { CategorySelectButton } from "../../components/Forms/CategorySelectButton";
 import { InputForm } from "../../components/Forms/inputForm";
 import { TransactionTypeButton } from "../../components/TransactionTypeButton";
 import { useForm } from "react-hook-form";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CategorySelect } from "../CategorySelect";
@@ -52,7 +53,7 @@ export function Register() {
     setCategoryModalOpen(true);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if (!transactionType) {
       return Alert.alert("Selecione o Tipo da transação ");
     }
@@ -61,8 +62,31 @@ export function Register() {
       return Alert.alert("Selecione o Tipo da transação ");
     }
 
-    console.log(form);
+    const data = {
+      name: form.name,
+      amount: form.amount,
+      transactionType,
+      category: category.key,
+    };
+
+    try {
+      const dataKey = "@gofinance:transactions";
+
+      await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possivel Salvar");
+    }
   }
+
+  useEffect(() => {
+    async function loadDatata() {
+      const result = await AsyncStorage.getItem("@gofinance:transactions");
+      console.log(JSON.parse(result!));
+    }
+
+    loadDatata();
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>

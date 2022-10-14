@@ -8,13 +8,14 @@ import {
 } from "react-native-iphone-x-helper";
 
 import { DatalistProps } from "./index";
+import { BorderlessButton, GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
-export const Header = styled.View`
+export const Header = styled(GestureHandlerRootView)`
   width: 100%;
   height: ${RFPercentage(42)}px;
 
@@ -59,10 +60,15 @@ export const UserName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.bold};
 `;
 
+export const LogoutButton = styled(BorderlessButton)`
+
+` 
+
 export const Icon = styled<any>(Feather)`
   color: ${({ theme }) => theme.colors.attention_light};
   font-size: ${RFValue(24)}px;
 `;
+
 
 export const HighLightCards = styled.ScrollView.attrs({
   horizontal: true,
