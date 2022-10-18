@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import * as S from "./styles";
 import { HighLightCard } from "../../components/HighLightCard";
 import {
@@ -47,9 +47,19 @@ export function Dashboard() {
     setData(transactionsFormated);
   }
 
-  useFocusEffect(() => {
-    loadTransactions();
-  }, []);
+  // useEffect(() => {
+  //   loadTransactions();
+
+  //   AsyncStorage.removeItem(dataKey);
+  // }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      {
+        loadTransactions();
+      }
+    }, [])
+  );
 
   useEffect(() => {
     async function clean() {
