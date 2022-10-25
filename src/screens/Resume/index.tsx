@@ -7,7 +7,8 @@ import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { addMonths } from "date-fns";
+import { addMonths, subMonths, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 interface CategoryData {
   key: string;
   name: string;
@@ -35,9 +36,9 @@ export function Resume() {
     if (action === "next") {
       const newDate = addMonths(selectedDate, 1);
       setSelectedDate(newDate);
-
-      console.log(selectedDate)
     } else {
+      const newDate = subMonths(selectedDate, 1);
+      setSelectedDate(newDate);
     }
   }
 
@@ -47,7 +48,10 @@ export function Resume() {
     const responseFormated = response ? JSON.parse(response) : [];
 
     const expensives = responseFormated.filter(
-      (expensive: TransactionCardData) => expensive.type === "negative"
+      (expensive: TransactionCardData) =>
+        expensive.type === "negative" &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
     );
 
     const expensiveTotal = expensives.reduce(
@@ -90,7 +94,7 @@ export function Resume() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectedDate]);
 
   return (
     <S.Container>
@@ -109,7 +113,9 @@ export function Resume() {
             <S.MonthSelectIcon name="chevron-left" />
           </S.MonthSelectButton>
 
-          <S.Month>Marco</S.Month>
+          <S.Month>
+            {format(selectedDate, "MMMM, yyyy", { locale: ptBR })}
+          </S.Month>
 
           <S.MonthSelectButton onPress={() => handleDateChange("next")}>
             <S.MonthSelectIcon name="chevron-right" />
