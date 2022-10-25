@@ -6,7 +6,8 @@ import { categories } from "../../utils/categories";
 import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
-
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { addMonths } from "date-fns";
 interface CategoryData {
   key: string;
   name: string;
@@ -28,6 +29,18 @@ export function Resume() {
     []
   );
   const theme = useTheme();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  function handleDateChange(action: "next" | "prev") {
+    if (action === "next") {
+      const newDate = addMonths(selectedDate, 1);
+      setSelectedDate(newDate);
+
+      console.log(selectedDate)
+    } else {
+    }
+  }
+
   async function loadData() {
     const dataKey = "@gofinance:transactions";
     const response = await AsyncStorage.getItem(dataKey);
@@ -84,7 +97,25 @@ export function Resume() {
       <S.Header>
         <S.Title>Resumo por Categoria</S.Title>
       </S.Header>
-      <S.Content>
+      <S.Content
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight(),
+        }}
+      >
+        <S.MonthSelect>
+          <S.MonthSelectButton onPress={() => handleDateChange("prev")}>
+            <S.MonthSelectIcon name="chevron-left" />
+          </S.MonthSelectButton>
+
+          <S.Month>Marco</S.Month>
+
+          <S.MonthSelectButton onPress={() => handleDateChange("next")}>
+            <S.MonthSelectIcon name="chevron-right" />
+          </S.MonthSelectButton>
+        </S.MonthSelect>
+
         <S.ChartContainer>
           <VictoryPie
             data={totalByCategories}
@@ -92,7 +123,11 @@ export function Resume() {
             y="total"
             colorScale={totalByCategories.map((item) => item.color)}
             style={{
-              labels: { fontSize: RFValue(18), fontWeight: "bold", fill: theme.colors.shape },
+              labels: {
+                fontSize: RFValue(18),
+                fontWeight: "bold",
+                fill: theme.colors.shape,
+              },
             }}
             labelRadius={90}
           />
