@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppRoutes } from "./src/routes/app.routes";
 import { StatusBar } from "expo-status-bar";
 import { SigIn } from "./src/screens/SigIn";
+import { AuthProvider } from "./src/hooks/auth";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,7 +32,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <StatusBar style="light" />
-        <SigIn />
+        <AuthProvider>
+          <SigIn />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   );
